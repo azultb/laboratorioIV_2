@@ -35,4 +35,24 @@ def main():
 
     print("\n[2]Estadisticas descriptivas de las variables numericas:")
     print(estadisticas.round(2))
+
+    #arreglos numpy para voltaje y RSSI
+    voltaje_arr = df['voltaje_bateria_V'].to_numpy()
+    rssi_arr = df['rssi_dBm'].to_numpy()
+
+    alerta_bateria = voltaje_arr < 3.5
+    alerta_rssi = rssi_arr < -85
+    alerta_general = alerta_bateria | alerta_rssi
+
+    conteo_bateria = np.sum(alerta_bateria)
+    conteo_rssi = np.sum(alerta_rssi)
+    conteo_total = np.sum(alerta_general)
+
+    print("\n[3] Conteo de Alertas :")
+    print(f"     Bateria baja (voltaje<3.5V): {conteo_bateria} registros")
+    print(f"     RSSI débil (rssi<-85dBm): {conteo_rssi} registros")
+    print(f"     Al menos una alerta: {conteo_total} registros")
+
+    #agregar columna de alerta al DataFrame
+    df['alerta'] = alerta_general
     
