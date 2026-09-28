@@ -154,3 +154,18 @@ def main():
 
     print('\n[5] Resumen Diario Calculado:')
     print(resumen_diario.round(2))
+
+    excel_filename = 'resumen_telemetria_nodo_iot.xlsx'
+    sheet_name = 'Resumen diario'
+
+    with pd.ExcelWriter(excel_filename, engine='openpyxl') as writer:
+    resumen_diario.to_excel(writer, sheet_name=sheet_name)
+
+    print(
+      f"\n[6] Archivo Excel '{excel_filename}' generado exitosamente en la hoja"
+      f" '{sheet_name}'."
+    )
+    print('=' * 60)
+
+    if _name_ == '_main_':
+        main()
