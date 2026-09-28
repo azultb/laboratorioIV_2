@@ -1,4 +1,5 @@
 #Estudiantes: Barra, Azul - Insua, Alexia
+#https://github.com/azultb/laboratorioIV_2
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -160,7 +161,7 @@ def main():
     sheet_name = 'Resumen diario'
 
     with pd.ExcelWriter(excel_filename, engine='openpyxl') as writer:
-    resumen_diario.to_excel(writer, sheet_name=sheet_name)
+        resumen_diario.to_excel(writer, sheet_name=sheet_name)
 
     print(
       f"\n[6] Archivo Excel '{excel_filename}' generado exitosamente en la hoja"
@@ -168,5 +169,5 @@ def main():
     )
     print('=' * 60)
 
-    if _name_ == '_main_':
-        main()
+if __name__ == '__main__':
+    main()
