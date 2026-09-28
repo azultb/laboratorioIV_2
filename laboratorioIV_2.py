@@ -141,3 +141,16 @@ def main():
     plt.tight_layout()
     plt.savefig('grafico_telemetria_iot.png', dpi=300)
     
+    print('\n[4] Generando Resumen Diario de Telemetría y Alertas...')
+    resumen_diario = df.groupby(df.index.date).agg(
+      temp_promedio=('temperatura_C', 'mean'),
+      temp_maxima=('temperatura_C', 'max'),
+      temp_minima=('temperatura_C', 'min'),
+      voltaje_promedio=('voltaje_bateria_V', 'mean'),
+      voltaje_minimo=('voltaje_bateria_V', 'min'),
+      cantidad_alertas=('alerta', 'sum'),
+    )
+    resumen_diario.index.name = 'Fecha'
+
+    print('\n[5] Resumen Diario Calculado:')
+    print(resumen_diario.round(2))
