@@ -12,7 +12,10 @@ def main():
     #cargar datos desde el archivo CSV
     file_path = "telemetria_nodo_iot.csv"
     df = pd.read_csv(
-        file_path, parse_dates=['timestamp'], index_col='timestamp')
+        file_path, 
+        parse_dates=['timestamp'], 
+        index_col='timestamp',
+        skipinitialspace=True)
 
     print("\n[1]Datos cargados correctamente desde el archivo CSV.")
     print(f'     Total de registros: {len(df)}')
@@ -26,7 +29,7 @@ def main():
         'temperatura_C',
         'humedad_pct',
         'voltaje_bateria_V',
-        'rssi_dBm',
+        'rssi_dbm',
     ]
     estadisticas= pd.DataFrame({
         'Media': df[columnas_numericas].mean(),
@@ -40,7 +43,7 @@ def main():
 
     #arreglos numpy para voltaje y RSSI
     voltaje_arr = df['voltaje_bateria_V'].to_numpy()
-    rssi_arr = df['rssi_dBm'].to_numpy()
+    rssi_arr = df['rssi_dbm'].to_numpy()
 
     alerta_bateria = voltaje_arr < 3.5
     alerta_rssi = rssi_arr < -85
@@ -112,9 +115,9 @@ def main():
     color_rssi = '#7570b3'
     ax_bot.plot(
         df.index,
-        df['rssi_dBm'],
+        df['rssi_dbm'],
         color=color_rssi,
-        label=' Señal RSSI (dBm)',
+        label='Señal RSSI (dBm)',
         linewidth=1,
     )
 
@@ -128,7 +131,7 @@ def main():
     ax_bot.grid(True, linestyle='--', alpha=0.6)
 
     rssi_alerta_times = df.index[alerta_rssi]
-    rssi_alerta_vals = df.loc[alerta_rssi, 'rssi_dBm']
+    rssi_alerta_vals = df.loc[alerta_rssi, 'rssi_dbm']
     ax_bot.scatter(
         rssi_alerta_times,
         rssi_alerta_vals,
@@ -142,6 +145,7 @@ def main():
 
     plt.tight_layout()
     plt.savefig('grafico_telemetria_iot.png', dpi=300)
+    plt.show()
     
     print('\n[4] Generando Resumen Diario de Telemetría y Alertas...')
     resumen_diario = df.groupby(df.index.date).agg(
